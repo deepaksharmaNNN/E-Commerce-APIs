@@ -1,10 +1,13 @@
 package com.ecom.ecommerceapis.Service;
 
+import com.ecom.ecommerceapis.Enums.UserType;
 import com.ecom.ecommerceapis.Models.User;
 import com.ecom.ecommerceapis.Repository.UserRepository;
 import com.ecom.ecommerceapis.RequestDTOs.AddUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -21,5 +24,11 @@ public class UserService {
                 .build();
         userRepository.save(user);
         return "User created successfully -> " + user.getId();
+    }
+    public List<User> getBuyers(){
+        return userRepository.findByUserType(UserType.BUYER);
+    }
+    public List<User> getSellers(){
+        return userRepository.findByUserType(UserType.SELLER);
     }
 }
