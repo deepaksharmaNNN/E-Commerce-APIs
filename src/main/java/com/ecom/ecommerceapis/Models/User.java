@@ -2,16 +2,14 @@ package com.ecom.ecommerceapis.Models;
 
 import com.ecom.ecommerceapis.Enums.UserType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Generated;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
 @Entity
 @Builder
+@Data
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
