@@ -6,9 +6,11 @@ import com.ecom.ecommerceapis.Models.User;
 import com.ecom.ecommerceapis.Repository.ProductRepository;
 import com.ecom.ecommerceapis.Repository.UserRepository;
 import com.ecom.ecommerceapis.RequestDTOs.AddUserRequest;
+import com.ecom.ecommerceapis.ResponseDTOs.ProductsSellerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,7 +38,18 @@ public class UserService {
     public List<User> getSellers(){
         return userRepository.findByUserType(UserType.SELLER);
     }
-    public List<Product> getSellerProducts(Long sellerId){
-        return productRepository.findBySellerId(sellerId);
+    public List<ProductsSellerResponse> getSellerProducts(Long sellerId){
+        List<ProductsSellerResponse> productsSellerResponses = new ArrayList<>();
+        List<Product> products = productRepository.findBySellerId(sellerId);
+        for(Product product : products){
+            productsSellerResponses.add(ProductsSellerResponse.builder()
+                    .name(product.getName())
+                    .description(product.getDescription())
+                    .productType(product.getProductType())
+                    .price(product.getPrice())
+                    .quantity(product.getQuantity())
+                    .build());
+        }
+        return productsSellerResponses;
     }
 }
