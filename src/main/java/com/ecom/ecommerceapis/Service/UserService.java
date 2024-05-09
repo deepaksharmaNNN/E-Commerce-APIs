@@ -1,7 +1,9 @@
 package com.ecom.ecommerceapis.Service;
 
 import com.ecom.ecommerceapis.Enums.UserType;
+import com.ecom.ecommerceapis.Models.Product;
 import com.ecom.ecommerceapis.Models.User;
+import com.ecom.ecommerceapis.Repository.ProductRepository;
 import com.ecom.ecommerceapis.Repository.UserRepository;
 import com.ecom.ecommerceapis.RequestDTOs.AddUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,9 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     public String createUser(AddUserRequest addUserRequest){
         User user = User.builder()
@@ -30,5 +35,8 @@ public class UserService {
     }
     public List<User> getSellers(){
         return userRepository.findByUserType(UserType.SELLER);
+    }
+    public List<Product> getSellerProducts(Long sellerId){
+        return productRepository.findBySellerId(sellerId);
     }
 }

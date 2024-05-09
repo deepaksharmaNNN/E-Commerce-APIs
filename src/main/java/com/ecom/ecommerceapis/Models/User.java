@@ -4,6 +4,8 @@ import com.ecom.ecommerceapis.Enums.UserType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
@@ -23,4 +25,7 @@ public class User {
 
     private String phoneNumber;
     private String address;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> products;
 }
