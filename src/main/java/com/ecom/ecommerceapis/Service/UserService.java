@@ -20,6 +20,6 @@ public class UserService {
                 .address(addUserRequest.getAddress())
                 .build();
         userRepository.save(user);
-        return "User created successfully" + user.getId();
+        return "User created successfully -> " + user.getId();
     }
 }
