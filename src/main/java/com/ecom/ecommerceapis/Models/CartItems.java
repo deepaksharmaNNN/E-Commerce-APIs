@@ -19,7 +19,9 @@ public class CartItems {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartItemId;
 
-    private List<Product> products;
+    private String productName;
+    private double price;
+    private int quantity;
 
 
     @JoinColumn
