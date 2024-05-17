@@ -23,6 +23,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    //create a product
     @PostMapping("/create")//http://localhost:8080/api/product/create
     public ResponseEntity<?> createProduct(@RequestBody AddProductRequest addProductRequest){
         try {

@@ -37,22 +37,6 @@ public class UserController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    //get the list of Sellers
-    @GetMapping("/sellers")//http://localhost:8080/api/user/sellers
-    public ResponseEntity<?> getSellers(){
-        try {
-            return new ResponseEntity<>(userService.getSellers(), HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    //get the list of Products added by a Seller
-    @GetMapping("/seller/{sellerId}")//http://localhost:8080/api/user/seller/{sellerId}
-    public ResponseEntity<?> getSellerProducts(@PathVariable Long sellerId){
-        try {
-            return new ResponseEntity<>(userService.getSellerProducts(sellerId), HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+
+
 }

@@ -30,5 +30,5 @@ public class Product {
 
     @ManyToOne
     @JoinColumn
-    private User user;
+    private Seller seller;
 }

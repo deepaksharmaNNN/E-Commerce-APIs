@@ -1,6 +1,5 @@
 package com.ecom.ecommerceapis.Service;
 
-import com.ecom.ecommerceapis.Enums.UserType;
 import com.ecom.ecommerceapis.Models.Product;
 import com.ecom.ecommerceapis.Models.User;
 import com.ecom.ecommerceapis.Repository.ProductRepository;
@@ -28,7 +27,6 @@ public class UserService {
         User user = User.builder()
                 .name(addUserRequest.getName())
                 .email(addUserRequest.getEmail())
-                .userType(addUserRequest.getUserType())
                 .phoneNumber(addUserRequest.getPhoneNumber())
                 .address(addUserRequest.getAddress())
                 .build();
@@ -40,23 +38,7 @@ public class UserService {
         return "User created successfully -> " + user.getId() + " and Cart created successfully -> " + user.getCart().getId();
     }
     public List<User> getBuyers(){
-        return userRepository.findByUserType(UserType.BUYER);
+        return userRepository.findAll();
     }
-    public List<User> getSellers(){
-        return userRepository.findByUserType(UserType.SELLER);
-    }
-    public List<ProductsSellerResponse> getSellerProducts(Long sellerId) {
-        List<ProductsSellerResponse> productsSellerResponses = new ArrayList<>();
-        List<Product> products = productRepository.findBySellerId(sellerId);
-        for (Product product : products) {
-            productsSellerResponses.add(ProductsSellerResponse.builder()
-                    .name(product.getName())
-                    .description(product.getDescription())
-                    .productType(product.getProductType())
-                    .price(product.getPrice())
-                    .quantity(product.getQuantity())
-                    .build());
-        }
-        return productsSellerResponses;
-    }
+
 }
