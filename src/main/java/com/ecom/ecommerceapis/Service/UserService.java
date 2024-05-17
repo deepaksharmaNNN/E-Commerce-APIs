@@ -21,7 +21,10 @@ public class UserService {
     @Autowired
     private ProductRepository productRepository;
 
-    public String createUser(AddUserRequest addUserRequest){
+    @Autowired
+    private CartService cartService;
+
+    public String createUser(AddUserRequest addUserRequest) {
         User user = User.builder()
                 .name(addUserRequest.getName())
                 .email(addUserRequest.getEmail())
@@ -30,7 +33,11 @@ public class UserService {
                 .address(addUserRequest.getAddress())
                 .build();
         userRepository.save(user);
-        return "User created successfully -> " + user.getId();
+
+        // Create a Cart for all users
+        cartService.createCart(user.getId());
+
+        return "User created successfully -> " + user.getId() + " and Cart created successfully -> " + user.getCart().getId();
     }
     public List<User> getBuyers(){
         return userRepository.findByUserType(UserType.BUYER);
@@ -38,10 +45,10 @@ public class UserService {
     public List<User> getSellers(){
         return userRepository.findByUserType(UserType.SELLER);
     }
-    public List<ProductsSellerResponse> getSellerProducts(Long sellerId){
+    public List<ProductsSellerResponse> getSellerProducts(Long sellerId) {
         List<ProductsSellerResponse> productsSellerResponses = new ArrayList<>();
         List<Product> products = productRepository.findBySellerId(sellerId);
-        for(Product product : products){
+        for (Product product : products) {
             productsSellerResponses.add(ProductsSellerResponse.builder()
                     .name(product.getName())
                     .description(product.getDescription())

@@ -1,4 +1,4 @@
-package com.ecom.ecommerceapis.RequestDTOs;
+package com.ecom.ecommerceapis.ResponseDTOs;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,10 +7,12 @@ import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Data
-public class AddProductToCartRequest {
-    private Long productId;
+@Builder
+public class ProductsInCartResponse {
+    private String productName;
+    private String description;
+    private double price;
     private int quantity;
-    private Long userId;
+
 }

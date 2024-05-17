@@ -10,4 +10,5 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
     //return all buyers
     List<User> findByUserType(UserType userType);
+
 }
