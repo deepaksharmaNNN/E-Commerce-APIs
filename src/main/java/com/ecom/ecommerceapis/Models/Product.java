@@ -25,7 +25,6 @@ public class Product {
     private ProductType productType;
     private double price;
     private int quantity;
-    private Long sellerId;
 
 
     @ManyToOne

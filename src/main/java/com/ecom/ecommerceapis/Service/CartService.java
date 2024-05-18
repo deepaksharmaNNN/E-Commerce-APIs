@@ -39,63 +39,66 @@ public class CartService {
     }
 
     public String addToCart(AddProductToCartRequest addProductToCartRequest){
-        //check if the user exists and has a cart
-        Long userId = addProductToCartRequest.getUserId();
-        Optional<Cart> cart = cartRepository.findById(userId);
-        if(cart.isPresent()){
-            //check if the product exists
-            Long productId = addProductToCartRequest.getProductId();
-            Optional<Product> product = productRepository.findById(productId);
-            if(product.isPresent()){
-                //check if the product is available
-                if(product.get().getQuantity() >= addProductToCartRequest.getQuantity()){
-                    //check if the product is already in the cart
-                    List<CartItems> cartItems = cart.get().getCartItems();
-                    for(CartItems cartItem : cartItems){
-                        if(cartItem.getProductId().equals(productId)){
-                            //update the quantity of the product in the cart
-                            cartItem.setQuantity(cartItem.getQuantity() + 1);
-                            cartRepository.save(cart.get());
-                            return "Product added to cart successfully";
-                        }else {
-                            //add the product to the cart
-                            CartItems newCartItem = new CartItems();
-                            newCartItem.setCart(cart.get());
-                            newCartItem.setProductId(productId);
-                            newCartItem.setQuantity(addProductToCartRequest.getQuantity());
-                            cartItemsRepository.save(newCartItem);
-                            cartItems.add(newCartItem);
-                            cartRepository.save(cart.get());
-                            userRepository.save(cart.get().getUser());
-                            return "Product added to cart successfully";
-                        }
-                    }
-                }else {
-                    return product.get().getName() + " is out of stock";
-                }
-            }else{
-                return "Product not found";
-            }
-        }else{
+        //get the user
+        User user = userRepository.findById(addProductToCartRequest.getUserId()).orElse(null);
+        if (user == null) {
+            return "User not found";
+        }
+        //get the cart
+        Cart cart = cartRepository.findByUser(user);
+        if (cart == null) {
             return "Cart not found";
         }
-        return "Product added to cart successfully";
+        //get the product
+        Product product = productRepository.findById(addProductToCartRequest.getProductId()).orElse(null);
+        if (product == null) {
+            return "Product not found";
+        }
+        //check if the product is already in the cart
+        List<CartItems> cartItems = cart.getCartItems();
+        for(CartItems cartItem : cartItems){
+            if(cartItem.getProductName().equals(product.getName())){
+                cartItem.setQuantity(cartItem.getQuantity() + addProductToCartRequest.getQuantity());
+                cartItem.setPrice(cartItem.getPrice() + (product.getPrice() * addProductToCartRequest.getQuantity()));
+                cartItemsRepository.save(cartItem);
+                //return product message with current product quantity in cart
+                return "Product already in cart, quantity updated to -> " + cartItem.getQuantity();
+            }
+        }
+        //add the product to the cart
+        CartItems cartItem = new CartItems();
+        cartItem.setProductName(product.getName());
+        cartItem.setDescription(product.getDescription());
+        cartItem.setQuantity(addProductToCartRequest.getQuantity());
+        cartItem.setPrice(product.getPrice() * addProductToCartRequest.getQuantity());
+        cartItem.setCart(cart);
+        cartItem.setProductId(product.getId());
+        cartItemsRepository.save(cartItem);
+        cartItems.add(cartItem);
+        cart.setCartItems(cartItems);
+        cartRepository.save(cart);
+        //return message with product quantity in cart
+        return "Product added to cart, quantity -> " + addProductToCartRequest.getQuantity();
+
     }
 
     //get the list of products in the cart
     public List<ProductsInCartResponse> getCartProducts(Long userId){
-        Optional<Cart> cart = cartRepository.findById(userId);
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            return new ArrayList<>();
+        }
+        Cart cart = cartRepository.findByUser(user);
         List<ProductsInCartResponse> productsInCartResponses = new ArrayList<>();
-        if(cart.isPresent()){
-            List<CartItems> cartItems = cart.get().getCartItems();
-            for(CartItems cartItem : cartItems){
-                ProductsInCartResponse productsInCartResponse = ProductsInCartResponse.builder()
-                        .productName(cartItem.getProductName())
-                        .description(cartItem.getDescription())
-                        .quantity(cartItem.getQuantity())
-                        .price(cartItem.getPrice())
-                        .build();
-            }
+        List<CartItems> cartItems = cart.getCartItems();
+        for(CartItems cartItem : cartItems){
+            ProductsInCartResponse productsInCartResponse = ProductsInCartResponse.builder()
+                    .productName(cartItem.getProductName())
+                    .description(cartItem.getDescription())
+                    .quantity(cartItem.getQuantity())
+                    .price(cartItem.getPrice())
+                    .build();
+            productsInCartResponses.add(productsInCartResponse);
         }
         return productsInCartResponses;
     }

@@ -1,8 +1,10 @@
 package com.ecom.ecommerceapis.Service;
 
 import com.ecom.ecommerceapis.Models.Product;
+import com.ecom.ecommerceapis.Models.Seller;
 import com.ecom.ecommerceapis.Repository.ProductRepository;
 import com.ecom.ecommerceapis.Repository.SellerRepository;
+import com.ecom.ecommerceapis.RequestDTOs.AddSellerRequest;
 import com.ecom.ecommerceapis.ResponseDTOs.ProductsSellerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,17 @@ public class SellerService {
 
     @Autowired
     private SellerRepository sellerRepository;
+
+    public String createSeller(AddSellerRequest addSellerRequest){
+        Seller seller = Seller.builder()
+                .name(addSellerRequest.getName())
+                .email(addSellerRequest.getEmail())
+                .phoneNumber(addSellerRequest.getPhoneNumber())
+                .address(addSellerRequest.getAddress())
+                .build();
+        sellerRepository.save(seller);
+        return "Seller created successfully -> " + seller.getId();
+    }
 
     public String getSellers(){
         return sellerRepository.findAll().toString();

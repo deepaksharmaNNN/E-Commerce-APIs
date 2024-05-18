@@ -1,5 +1,6 @@
 package com.ecom.ecommerceapis.Service;
 
+import com.ecom.ecommerceapis.Models.Cart;
 import com.ecom.ecommerceapis.Models.Product;
 import com.ecom.ecommerceapis.Models.User;
 import com.ecom.ecommerceapis.Repository.ProductRepository;
@@ -30,10 +31,15 @@ public class UserService {
                 .phoneNumber(addUserRequest.getPhoneNumber())
                 .address(addUserRequest.getAddress())
                 .build();
+
+        //create cart for the user
+        Cart cart = new Cart();
+        cart.setUser(user);
+        user.setCart(cart);
         userRepository.save(user);
 
         // Create a Cart for all users
-        cartService.createCart(user.getId());
+        //cartService.createCart(user.getId());
 
         return "User created successfully -> " + user.getId() + " and Cart created successfully -> " + user.getCart().getId();
     }

@@ -1,23 +1,33 @@
 package com.ecom.ecommerceapis.Controller;
 
+import com.ecom.ecommerceapis.RequestDTOs.AddSellerRequest;
 import com.ecom.ecommerceapis.Service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/seller")
 public class SellerController {
 
     @Autowired
     private SellerService sellerService;
 
+    //add a Seller
+    @PostMapping("/add")//http://localhost:8080/api/seller/add
+    public ResponseEntity<?> addSeller(@RequestBody AddSellerRequest addSellerRequest){
+        try {
+            String response = sellerService.createSeller(addSellerRequest);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
     //get the list of Sellers
-    @GetMapping("/sellers")//http://localhost:8080/api/user/sellers
+    @GetMapping("/sellers")//http://localhost:8080/api/seller/sellers
     public ResponseEntity<?> getSellers(){
         try {
             return new ResponseEntity<>(sellerService.getSellers(), HttpStatus.OK);
