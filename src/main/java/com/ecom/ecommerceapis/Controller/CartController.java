@@ -53,6 +53,26 @@ public class CartController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    //increase the quantity of a product by 1 in the cart
+    @PutMapping("/increase/{cartItemId}")//http://localhost:8080/api/cart/increase/{cartItemId}
+    public ResponseEntity<?> increaseQuantity(@PathVariable Long cartItemId){
+        try {
+            String response = cartService.increaseQuantity(cartItemId);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //decrease the quantity of a product by 1 in the cart
+    @PutMapping("/decrease/{cartItemId}")//http://localhost:8080/api/cart/decrease/{cartItemId}
+    public ResponseEntity<?> decreaseQuantity(@PathVariable Long cartItemId){
+        try {
+            String response = cartService.decreaseQuantity(cartItemId);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     //get the list of products in the cart
     @GetMapping("/products/{userId}")//http://localhost:8080/api/cart/products/{userId}
     public List<ProductsInCartResponse> getCartProducts(@PathVariable Long userId){

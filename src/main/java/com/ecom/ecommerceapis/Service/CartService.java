@@ -91,7 +91,33 @@ public class CartService {
         cartItemsRepository.delete(cartItem);
         return "Product removed from cart";
     }
-
+    //increase the quantity of a product by 1 in the cart
+    public String increaseQuantity(Long cartItemId){
+        CartItems cartItem = cartItemsRepository.findById(cartItemId).orElse(null);
+        if (cartItem == null) {
+            return "Product not found in cart";
+        }
+        cartItem.setQuantity(cartItem.getQuantity() + 1);
+        cartItem.setPrice(cartItem.getPrice() + cartItem.getPrice());
+        cartItemsRepository.save(cartItem);
+        return "Product quantity increased to -> " + cartItem.getQuantity();
+    }
+    //decrease the quantity of a product by 1 in the cart
+    public String decreaseQuantity(Long cartItemId){
+        CartItems cartItem = cartItemsRepository.findById(cartItemId).orElse(null);
+        if (cartItem == null) {
+            return "Product not found in cart";
+        }
+        if(cartItem.getQuantity() == 1){
+            return "Product quantity cannot be less than 1";
+        }
+        cartItem.setQuantity(cartItem.getQuantity() - 1);
+        Product product = productRepository.findById(cartItem.getProductId()).orElse(null);
+        double price = product != null ? product.getPrice() : 0;
+        cartItem.setPrice(cartItem.getPrice() - price);
+        cartItemsRepository.save(cartItem);
+        return "Product quantity decreased to -> " + cartItem.getQuantity();
+    }
     //get the list of products in the cart
     public List<ProductsInCartResponse> getCartProducts(Long userId){
         User user = userRepository.findById(userId).orElse(null);
