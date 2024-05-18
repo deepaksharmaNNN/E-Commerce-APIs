@@ -43,9 +43,20 @@ public class CartController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    //remove a product from the cart by id
+    @DeleteMapping("/remove/{cartItemId}")//http://localhost:8080/api/cart/remove/{cartItemId}
+    public ResponseEntity<?> removeFromCart(@PathVariable Long cartItemId){
+        try {
+            String response = cartService.removeFromCart(cartItemId);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     //get the list of products in the cart
     @GetMapping("/products/{userId}")//http://localhost:8080/api/cart/products/{userId}
     public List<ProductsInCartResponse> getCartProducts(@PathVariable Long userId){
         return cartService.getCartProducts(userId);
     }
+
 }

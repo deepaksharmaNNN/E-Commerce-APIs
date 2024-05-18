@@ -82,6 +82,16 @@ public class CartService {
 
     }
 
+    //remove a product from the cart by id
+    public String removeFromCart(Long cartItemId){
+        CartItems cartItem = cartItemsRepository.findById(cartItemId).orElse(null);
+        if (cartItem == null) {
+            return "Product not found in cart";
+        }
+        cartItemsRepository.delete(cartItem);
+        return "Product removed from cart";
+    }
+
     //get the list of products in the cart
     public List<ProductsInCartResponse> getCartProducts(Long userId){
         User user = userRepository.findById(userId).orElse(null);
