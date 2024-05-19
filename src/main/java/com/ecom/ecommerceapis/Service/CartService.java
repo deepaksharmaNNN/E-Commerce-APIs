@@ -33,6 +33,7 @@ public class CartService {
         Cart cart = new Cart();
         User user = userRepository.findById(userId).get();
         cart.setUser(user);
+        cart.setTotalAmount(0.0);
         cart.setCartItems(new ArrayList<>());
         cartRepository.save(cart);
         return "Cart created successfully -> " + cart.getId();
@@ -75,6 +76,7 @@ public class CartService {
         cartItem.setProductId(product.getId());
         cartItemsRepository.save(cartItem);
         cartItems.add(cartItem);
+        cart.setTotalAmount(cart.getTotalAmount() + cartItem.getPrice());
         cart.setCartItems(cartItems);
         cartRepository.save(cart);
         //return message with product quantity in cart
@@ -88,6 +90,12 @@ public class CartService {
         if (cartItem == null) {
             return "Product not found in cart";
         }
+        //decrease total amount in cart
+        Cart cart = cartRepository.findById(cartItem.getCart().getId()).orElse(null);
+        if (cart == null) {
+            return "Cart not found";
+        }
+        cart.setTotalAmount(cart.getTotalAmount() - cartItem.getPrice());
         cartItemsRepository.delete(cartItem);
         return "Product removed from cart";
     }
@@ -100,6 +108,12 @@ public class CartService {
         cartItem.setQuantity(cartItem.getQuantity() + 1);
         cartItem.setPrice(cartItem.getPrice() + cartItem.getPrice());
         cartItemsRepository.save(cartItem);
+        //update the total amount in the cart
+        Cart cart = cartRepository.findById(cartItem.getCart().getId()).orElse(null);
+        if (cart == null) {
+            return "Cart not found";
+        }
+        cart.setTotalAmount(cart.getTotalAmount() + cartItem.getPrice());
         return "Product quantity increased to -> " + cartItem.getQuantity();
     }
     //decrease the quantity of a product by 1 in the cart
@@ -116,6 +130,12 @@ public class CartService {
         double price = product != null ? product.getPrice() : 0;
         cartItem.setPrice(cartItem.getPrice() - price);
         cartItemsRepository.save(cartItem);
+        //update the total amount in the cart
+        Cart cart = cartRepository.findById(cartItem.getCart().getId()).orElse(null);
+        if (cart == null) {
+            return "Cart not found";
+        }
+        cart.setTotalAmount(cart.getTotalAmount() - price);
         return "Product quantity decreased to -> " + cartItem.getQuantity();
     }
     //get the list of products in the cart

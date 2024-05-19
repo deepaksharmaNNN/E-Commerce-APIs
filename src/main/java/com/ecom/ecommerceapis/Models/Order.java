@@ -29,6 +29,7 @@ public class Order {
 
     private String shippingAddress;
 
+    @Enumerated(EnumType.STRING)
     private String paymentMethod;
 
     @ManyToOne
