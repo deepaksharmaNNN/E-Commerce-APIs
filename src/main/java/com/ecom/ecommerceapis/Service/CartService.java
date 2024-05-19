@@ -68,6 +68,7 @@ public class CartService {
         }
         //add the product to the cart
         CartItems cartItem = new CartItems();
+        cartItem.setProductId(product.getId());
         cartItem.setProductName(product.getName());
         cartItem.setDescription(product.getDescription());
         cartItem.setQuantity(addProductToCartRequest.getQuantity());

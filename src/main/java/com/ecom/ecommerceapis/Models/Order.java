@@ -1,6 +1,7 @@
 package com.ecom.ecommerceapis.Models;
 
 import com.ecom.ecommerceapis.Enums.OrderStatus;
+import com.ecom.ecommerceapis.Enums.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,7 +31,7 @@ public class Order {
     private String shippingAddress;
 
     @Enumerated(EnumType.STRING)
-    private String paymentMethod;
+    private PaymentMethod paymentMethod;
 
     @ManyToOne
     @JoinColumn
