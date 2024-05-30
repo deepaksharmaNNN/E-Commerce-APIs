@@ -5,6 +5,7 @@ import com.ecom.ecommerceapis.Enums.PaymentMethod;
 import com.ecom.ecommerceapis.Models.*;
 import com.ecom.ecommerceapis.Repository.CartRepository;
 import com.ecom.ecommerceapis.Repository.OrderRepository;
+import com.ecom.ecommerceapis.Repository.ProductRepository;
 import com.ecom.ecommerceapis.Repository.UserRepository;
 import com.ecom.ecommerceapis.RequestDTOs.PlaceOrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class OrderService {
 
     @Autowired
     private CartRepository cartRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     public String placeOrder(PlaceOrderRequest placeOrderRequest){
         //Get the user from the user id
@@ -48,6 +52,12 @@ public class OrderService {
             orderItem.setPrice(cartItem.getPrice());
             orderItem.setOrder(order);
 
+            //Update the product quantity
+            Product product = productRepository.findById(cartItem.getProductId()).orElse(null);
+            if(product != null){
+                product.setQuantity(product.getQuantity() - cartItem.getQuantity());
+                productRepository.save(product);
+            }
             orderItems.add(orderItem);
         }
         order.setOrderItems(orderItems);
