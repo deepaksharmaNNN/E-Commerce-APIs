@@ -55,10 +55,22 @@ public class CartService {
         if (product == null) {
             return "Product not found";
         }
+        //check if the product is in stock
+        if(product.getQuantity() < addProductToCartRequest.getQuantity()){
+            return "Product out of stock";
+        }
+        //check for product quantity is within limit of 10 items
+        if(addProductToCartRequest.getQuantity() > 10){
+            return "Product quantity cannot be more than 10";
+        }
         //check if the product is already in the cart
         List<CartItems> cartItems = cart.getCartItems();
         for(CartItems cartItem : cartItems){
             if(cartItem.getProductName().equals(product.getName())){
+                //check if the quantity of the product in the cart and the quantity to be added is greater than 10
+                if(cartItem.getQuantity() + addProductToCartRequest.getQuantity() > 10){
+                    return "Product quantity cannot be more than 10";
+                }
                 cartItem.setQuantity(cartItem.getQuantity() + addProductToCartRequest.getQuantity());
                 cartItem.setPrice(cartItem.getPrice() + (product.getPrice() * addProductToCartRequest.getQuantity()));
                 cartItemsRepository.save(cartItem);

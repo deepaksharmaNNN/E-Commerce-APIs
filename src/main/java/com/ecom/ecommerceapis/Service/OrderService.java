@@ -52,6 +52,9 @@ public class OrderService {
         }
         order.setOrderItems(orderItems);
 
+
+
+
         //SAVE THE ORDER
         orderRepository.save(order);
 
