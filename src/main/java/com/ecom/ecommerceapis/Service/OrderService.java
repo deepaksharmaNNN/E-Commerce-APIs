@@ -76,4 +76,31 @@ public class OrderService {
         cartRepository.save(cart);
         return "Order placed successfully -> " + order.getId();
     }
+
+    //Cancel order
+    public String cancelOrder(Long orderId){
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+        //Check if the order is already cancelled
+        if(order.getOrderStatus().equals(OrderStatus.CANCELLED)){
+            return "Order already cancelled";
+        }
+        //Check if the order is already delivered
+        if(order.getOrderStatus().equals(OrderStatus.DELIVERED)){
+            return "Order already delivered";
+        }
+        //Cancel the order
+        order.setOrderStatus(OrderStatus.CANCELLED);
+        orderRepository.save(order);
+        //Update the product quantity
+        List<OrderItem> orderItems = order.getOrderItems();
+        for(OrderItem orderItem : orderItems){
+            Product product = productRepository.findById(orderItem.getProductId()).orElse(null);
+            if(product != null){
+                product.setQuantity(product.getQuantity() + orderItem.getQuantity());
+                productRepository.save(product);
+            }
+        }
+
+        return "Order cancelled successfully";
+    }
 }
