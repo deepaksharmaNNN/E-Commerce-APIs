@@ -57,4 +57,14 @@ public class UserController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    //Delete a user
+    @DeleteMapping("/delete/{userId}")//http://localhost:8080/api/user/delete/1
+    public ResponseEntity<?> deleteUser(@PathVariable Long userId){
+        try{
+            String response = userService.deleteUser(userId);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
