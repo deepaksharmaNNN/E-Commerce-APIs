@@ -37,6 +37,24 @@ public class UserController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
+    //Update user phone number
+    @PutMapping("/update/phone/{userId}")//http://localhost:8080/api/user/update/phone/1
+    public ResponseEntity<?> updateUserPhoneNumber(@PathVariable Long userId, @RequestParam String phoneNumber){
+        try{
+            String response = userService.updateUserPhoneNumber(userId, phoneNumber);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //Update user Email
+    @PutMapping("/update/email/{userId}")//http://localhost:8080/api/user/update/email/1
+    public ResponseEntity<?> updateUserEmail(@PathVariable Long userId, @RequestParam String email){
+        try{
+            String response = userService.updateUserEmail(userId, email);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

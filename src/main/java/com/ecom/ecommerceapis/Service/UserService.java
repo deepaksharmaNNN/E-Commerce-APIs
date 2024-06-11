@@ -46,5 +46,16 @@ public class UserService {
     public List<User> getBuyers(){
         return userRepository.findAll();
     }
-
+    public String updateUserPhoneNumber(Long userId, String phoneNumber){
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setPhoneNumber(phoneNumber);
+        userRepository.save(user);
+        return "Phone number updated successfully";
+    }
+    public String updateUserEmail(Long userId, String email){
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setEmail(email);
+        userRepository.save(user);
+        return "Email updated successfully";
+    }
 }

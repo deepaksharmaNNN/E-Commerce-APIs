@@ -39,4 +39,7 @@ public class OrderController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    //Get all orders
+    //@GetMapping("/all")//http://localhost:8080/api/order/all
+
 }
