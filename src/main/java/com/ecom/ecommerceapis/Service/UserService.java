@@ -1,16 +1,14 @@
 package com.ecom.ecommerceapis.Service;
 
 import com.ecom.ecommerceapis.Models.Cart;
-import com.ecom.ecommerceapis.Models.Product;
+
 import com.ecom.ecommerceapis.Models.User;
-import com.ecom.ecommerceapis.Repository.ProductRepository;
 import com.ecom.ecommerceapis.Repository.UserRepository;
 import com.ecom.ecommerceapis.RequestDTOs.AddUserRequest;
-import com.ecom.ecommerceapis.ResponseDTOs.ProductsSellerResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,11 +16,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private CartService cartService;
 
     public String createUser(AddUserRequest addUserRequest) {
         User user = User.builder()
@@ -58,9 +51,11 @@ public class UserService {
         userRepository.save(user);
         return "Email updated successfully";
     }
-//    public String deleteUser(Long userId){
-//        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-//        userRepository.delete(user);
-//        return "User deleted successfully";
-//    }
+/*
+    public String deleteUser(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        userRepository.delete(user);
+        return "User deleted successfully";
+    }
+*/
 }

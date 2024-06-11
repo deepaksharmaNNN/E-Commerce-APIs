@@ -3,7 +3,6 @@ package com.ecom.ecommerceapis.Controller;
 import com.ecom.ecommerceapis.RequestDTOs.AddProductRequest;
 import com.ecom.ecommerceapis.Service.ProductService;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
