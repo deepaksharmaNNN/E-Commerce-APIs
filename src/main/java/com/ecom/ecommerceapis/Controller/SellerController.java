@@ -44,4 +44,24 @@ public class SellerController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    //Update seller phone number
+    @PutMapping("/update/phone/{sellerId}")//http://localhost:8080/api/seller/update/phone/1
+    public ResponseEntity<?> updateSellerPhoneNumber(@PathVariable Long sellerId, @RequestParam String phoneNumber){
+        try{
+            String response = sellerService.updateSellerPhoneNumber(sellerId, phoneNumber);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //Update seller Email
+    @PutMapping("/update/email/{sellerId}")//http://localhost:8080/api/seller/update/email/1
+    public ResponseEntity<?> updateSellerEmail(@PathVariable Long sellerId, @RequestParam String email){
+        try{
+            String response = sellerService.updateSellerEmail(sellerId, email);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

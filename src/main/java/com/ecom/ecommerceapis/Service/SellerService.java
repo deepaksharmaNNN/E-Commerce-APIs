@@ -49,4 +49,16 @@ public class SellerService {
         }
         return productsSellerResponses;
     }
+    public String updateSellerPhoneNumber(Long sellerId, String phoneNumber){
+        Seller seller = sellerRepository.findById(sellerId).orElseThrow(() -> new RuntimeException("Seller not found"));
+        seller.setPhoneNumber(phoneNumber);
+        sellerRepository.save(seller);
+        return "Phone number updated successfully";
+    }
+    public String updateSellerEmail(Long sellerId, String email){
+        Seller seller = sellerRepository.findById(sellerId).orElseThrow(() -> new RuntimeException("Seller not found"));
+        seller.setEmail(email);
+        sellerRepository.save(seller);
+        return "Email updated successfully";
+    }
 }
